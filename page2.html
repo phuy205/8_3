@@ -1,17 +1,194 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trang 2</title>
-<link rel="stylesheet" href="style.css">
+<title>8-3 của Thanh Huyền</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+margin:0;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+text-align:center;
+background:url("nen.jpg") center/cover no-repeat;
+overflow:hidden;
+font-family:'Pacifico', cursive;
+}
+
+/* khối chữ */
+
+.text-box{
+transition:0.4s;
+}
+
+.text-box.move{
+transform:translateY(-70px);
+}
+
+.name{
+font-size:40px;
+color:#ff4d6d;
+min-height:60px;
+text-shadow:0 3px 10px rgba(0,0,0,0.3);
+}
+
+/* ảnh */
+
+.photo{
+margin-top:25px;
+width:220px;
+border-radius:20px;
+box-shadow:0 10px 25px rgba(0,0,0,0.5);
+transition:0.4s;
+cursor:pointer;
+}
+
+.photo.active{
+transform:scale(1.3);
+}
+
+/* button */
+
+.btn-box{
+margin-top:20px;
+background:rgba(255,192,203,0.7);
+padding:10px 25px;
+border-radius:25px;
+display:flex;
+gap:15px;
+backdrop-filter:blur(10px);
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+transition:0.4s;
+}
+
+/* button lùi xuống */
+
+.btn-box.move-down{
+transform:translateY(70px);
+}
+
+.btn{
+font-size:22px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.btn:hover{
+transform:scale(1.2);
+}
+
+/* tim bay */
+
+.heart{
+position:fixed;
+bottom:-20px;
+font-size:20px;
+animation:fly 6s linear forwards;
+}
+
+@keyframes fly{
+0%{
+transform:translateY(0) scale(1);
+opacity:1;
+}
+100%{
+transform:translateY(-110vh) scale(1.6);
+opacity:0;
+}
+}
+
+</style>
 </head>
 
 <body>
 
-<h1>Cảm ơn em đã bấm ❤️</h1>
-<p>Anh còn một điều nữa...</p>
+<div class="text-box" id="textBox">
+<div class="name" id="typing"></div>
+</div>
 
-<button onclick="location.href='page3.html'">YES</button>
+<img src="anh4.jpg" class="photo" id="photo">
+
+<div class="btn-box" id="btnBox">
+<div class="btn" onclick="openLetter()">💌</div>
+</div>
+
+<script>
+
+/* typing chữ */
+
+const text = "Happy Women's Day\nThanh Huyền ❤️";
+let i = 0;
+
+function typeEffect(){
+
+if(i < text.length){
+
+let char = text.charAt(i);
+
+if(char === "\n"){
+document.getElementById("typing").innerHTML += "<br>";
+}else{
+document.getElementById("typing").innerHTML += char;
+}
+
+i++;
+setTimeout(typeEffect,120);
+
+}
+
+}
+
+typeEffect();
+
+/* phóng to ảnh */
+
+const photo = document.getElementById("photo");
+const textBox = document.getElementById("textBox");
+const btnBox = document.getElementById("btnBox");
+
+photo.onclick = function(){
+
+photo.classList.toggle("active");
+textBox.classList.toggle("move");
+btnBox.classList.toggle("move-down");
+
+};
+
+/* tim bay */
+
+function createHeart(){
+
+const heart = document.createElement("div");
+heart.className = "heart";
+heart.innerHTML = "❤️";
+
+heart.style.left = Math.random()*100 + "vw";
+heart.style.fontSize = (20 + Math.random()*20) + "px";
+
+document.body.appendChild(heart);
+
+setTimeout(()=>{
+heart.remove();
+},6000);
+
+}
+
+setInterval(createHeart,1200);
+
+/* sang trang thư */
+
+function openLetter(){
+window.location.href="page3.html";
+}
+
+</script>
 
 </body>
 </html>

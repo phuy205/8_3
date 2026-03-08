@@ -1,15 +1,278 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trang 3</title>
-<link rel="stylesheet" href="style.css">
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+    <title>Gửi Tặng Huyền</title>
+    <style>
+        :root {
+            --pink-light: #f4e3e6;
+            --pink-main: #ff4d6d;
+            --envelope-dark: #d78282;
+            --envelope-light: #e5a9a9;
+        }
 
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--pink-light);
+            font-family: 'Pacifico', cursive;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        /* --- Hiệu ứng Trái tim bay trang trí --- */
+        .heart {
+            position: absolute;
+            color: var(--pink-main);
+            opacity: 0.5;
+            font-size: 15px;
+            user-select: none;
+            pointer-events: none;
+            animation: float 4s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0.8; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- Nút Quay về trang trước (page2.html) --- */
+        .btn-back-home {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 35px;
+            height: 35px;
+            background: white;
+            color: var(--pink-main);
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            font-size: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            z-index: 100;
+            transition: 0.3s;
+        }
+
+        .btn-back-home:hover {
+            background: var(--pink-main);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .container {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            cursor: pointer;
+            margin-top: 120px;
+        }
+
+        /* Nền phong bì */
+        .envelope-back {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--envelope-dark);
+            border-radius: 5px;
+            z-index: 1;
+        }
+
+        /* Nắp phong bì */
+        .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid var(--envelope-dark);
+            transform-origin: top;
+            transition: transform 0.6s ease;
+            z-index: 20;
+        }
+
+        .open .flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        /* Tờ giấy */
+        .paper {
+            position: absolute;
+            left: 15px;
+            width: 270px;
+            height: 350px; 
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            z-index: 10;
+            box-sizing: border-box;
+            bottom: -100px; 
+            opacity: 0;
+            transform: translateY(200px); 
+            transition: transform 0.8s ease-in-out, opacity 0.4s ease;
+            pointer-events: none;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+
+        .paper::-webkit-scrollbar { display: none; }
+
+        .open .paper {
+            opacity: 1;
+            transform: translateY(-100px); 
+            pointer-events: auto;
+        }
+
+        /* Mặt trước phong bì */
+        .envelope-front {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 150px;
+            background: var(--envelope-light);
+            border-radius: 0 0 5px 5px;
+            z-index: 15;
+            clip-path: polygon(0% 0%, 20% 40%, 50% 60%, 80% 40%, 100% 0%, 100% 100%, 0% 100%);
+        }
+
+        .content-box { text-align: center; }
+
+        .title {
+            font-size: 1.1rem;
+            color: var(--pink-main);
+            margin-bottom: 10px;
+            min-height: 2.2em;
+        }
+
+        .text-body {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #444;
+            margin-bottom: 20px;
+            min-height: 50px;
+            text-align: center;
+        }
+
+        .photo {
+            width: 100%;
+            max-width: 180px;
+            border-radius: 5px;
+            border: 4px solid #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            opacity: 0; 
+            transition: opacity 1s ease;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .hint {
+            position: absolute;
+            bottom: -60px;
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+            color: var(--envelope-dark);
+            font-family: sans-serif;
+            transition: 0.3s;
+        }
+
+        .open .hint { opacity: 0; }
+    </style>
+</head>
 <body>
 
-<h1>Chúc em 8/3 thật vui 🌷</h1>
-<p>Cảm ơn vì đã xuất hiện trong cuộc đời anh ❤️</p>
+    <a href="page2.html" class="btn-back-home" title="Quay lại">
+        <span>❮</span>
+    </a>
+
+    <div class="container" id="container">
+        <div class="flap"></div>
+        <div class="envelope-back"></div>
+        
+        <div class="paper" id="paper">
+            <div class="content-box">
+                <div class="title" id="typing-title"></div>
+                <div class="text-body" id="typing-body"></div>
+                <img src="anh4.jpg" alt="Thanh Huyền" class="photo" id="photo">
+            </div>
+        </div>
+
+        <div class="envelope-front"></div>
+        <div class="hint">eiu chạm vào phong bì điii</div>
+    </div>
+
+    <script>
+        const container = document.getElementById("container");
+        const typingTitle = document.getElementById("typing-title");
+        const typingBody = document.getElementById("typing-body");
+        const photo = document.getElementById("photo");
+
+        const titleMessage = "Happy Women's Day Huyền! ";
+        const bodyMessage = "Gửi bé Huyền của anh<br><br>Chúc cho cô gái nhỏ của anh luôn xinh đẹp vui vẻ và hạnh phúc em nhé. Mong rằng em sẽ luôn nở nụ cười xinh trên môi, gác bỏ mọi ưu phiền và luôn biết yêu bản thân nhiều hơn. Mong cho mọi điều tốt đẹp nhất sẽ đến với em và tình yêu đôi ta. Chúc cho tình yêu của chúng ta sẽ mãi mãi bền lâu...<br><br>Cảm ơn em đã luôn đồng hành cùng anh!";
+
+        let isOpened = false;
+
+        // Hiệu ứng trái tim bay trang trí phông nền
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.innerHTML = "❤";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = Math.random() * 2 + 3 + "s";
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 4000);
+        }
+        setInterval(createHeart, 400);
+
+        container.onclick = function() {
+            if (isOpened) return;
+            isOpened = true;
+            container.classList.add("open");
+
+            setTimeout(() => {
+                typeWriter(typingTitle, titleMessage, 70, () => {
+                    setTimeout(() => {
+                        typeWriter(typingBody, bodyMessage, 50, () => {
+                            photo.style.opacity = "1";
+                        });
+                    }, 500);
+                });
+            }, 1000);
+        }
+
+        function typeWriter(element, text, speed, callback) {
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    if (text.slice(i, i + 4) === "<br>") {
+                        element.innerHTML += "<br>";
+                        i += 4;
+                    } else {
+                        element.innerHTML += text.charAt(i);
+                        i++;
+                    }
+                    setTimeout(type, speed);
+                } else if (callback) {
+                    callback();
+                }
+            }
+            type();
+        }
+    </script>
 
 </body>
 </html>

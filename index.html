@@ -2,16 +2,194 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>8/3</title>
-<link rel="stylesheet" href="style.css">
+<title>Love You - 8/3</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background-image:url("nen.jpg");
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+/* khung chính */
+.container{
+background:#ffd6e0;
+padding:25px;
+border-radius:25px;
+width:95%;
+max-width:420px;
+box-shadow:0 15px 40px rgba(0,0,0,0.2);
+}
+
+/* layout */
+.card{
+display:flex;
+gap:15px;
+align-items:center;
+}
+
+/* ảnh */
+.card img{
+width:140px;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* bên phải */
+.right{
+flex:1;
+text-align:center;
+}
+
+/* tiêu đề */
+h3{
+color:#c2185b;
+font-size:16px;
+margin-bottom:10px;
+}
+
+/* khu vực mật khẩu */
+.dots{
+font-size:28px;
+letter-spacing:10px;
+margin:15px 0;
+background:white;
+padding:10px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* bàn phím */
+.keypad{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+margin-top:10px;
+}
+
+/* nút số */
+button{
+font-size:18px;
+padding:14px;
+border:none;
+border-radius:50%;
+background:white;
+box-shadow:0 4px 10px rgba(0,0,0,0.15);
+transition:all 0.15s ease;
+}
+
+/* hiệu ứng khi bấm */
+button:active{
+transform:scale(0.9);
+box-shadow:0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* hiệu ứng nổi khi chạm */
+button:hover{
+background:#ffe4ec;
+}
+
+</style>
+
 </head>
 
 <body>
 
-<h1>Chúc mừng 8/3 🌸</h1>
-<p>Anh có điều muốn nói...</p>
+<div class="container">
 
-<button onclick="location.href='page2.html'">YES ❤️</button>
+<div class="card">
+
+<img src="anh3.jpg">
+
+<div class="right">
+
+<h3>Mật khẩu là ngày chúng ta xác định quen nhau</h3>
+
+<div id="dots" class="dots">○ ○ ○ ○</div>
+
+<div class="keypad">
+
+<button onclick="press(1)">1</button>
+<button onclick="press(2)">2</button>
+<button onclick="press(3)">3</button>
+
+<button onclick="press(4)">4</button>
+<button onclick="press(5)">5</button>
+<button onclick="press(6)">6</button>
+
+<button onclick="press(7)">7</button>
+<button onclick="press(8)">8</button>
+<button onclick="press(9)">9</button>
+
+<button onclick="clearPass()">⌫</button>
+<button onclick="press(0)">0</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let password=""
+let correct="2511"
+
+function press(num){
+
+if(password.length<4){
+password+=num
+updateDots()
+}
+
+if(password.length===4){
+
+if(password===correct){
+window.location.href="page2.html"
+}else{
+alert("Sai mật khẩu ❤️")
+password=""
+updateDots()
+}
+
+}
+
+}
+
+function updateDots(){
+
+let dots=""
+
+for(let i=0;i<4;i++){
+
+if(i<password.length){
+dots+="● "
+}else{
+dots+="○ "
+}
+
+}
+
+document.getElementById("dots").innerHTML=dots
+
+}
+
+function clearPass(){
+password=password.slice(0,-1)
+updateDots()
+}
+
+</script>
 
 </body>
 </html>
